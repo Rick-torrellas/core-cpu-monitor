@@ -1,9 +1,9 @@
 [project]
 name = "core-cpu-monitor"
-version = "0.2.0"
+version = "0.2.1"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.11"
 dependencies = [
-    "core-log-engine>=0.2.1",
+    "core-log-engine>=0.2.2",
 ]
