@@ -9,4 +9,4 @@ on:
 jobs:
   # Llamada al módulo de publicación (solo si hay un tag)
   publish:
-    uses: ./.github/workflows/pip-publish.yml
+    uses: ./.github/workflows/pip-publish.yaml
