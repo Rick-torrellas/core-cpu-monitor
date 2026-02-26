@@ -9,6 +9,7 @@ on:
 jobs:
   # Llamada al módulo de publicación (solo si hay un tag)
   publish:
+   if: startsWith(github.ref, 'refs/tags/v')
    permissions:
       contents: read    # Necesario para leer el código
       id-token: write   # El que te está pidiendo el error
