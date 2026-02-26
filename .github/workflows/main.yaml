@@ -1,0 +1,23 @@
+name: main ci/cd pipeline
+
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*' # Detecta versiones como v1.0.0    
+  pull_request:
+    branches: [ main ]
+  
+jobs:
+  # 2. Ejecutar Linting
+  CI:
+    uses: ./.github/workflows/ci.yaml
+  # 1. Ejecutar Formateo
+  CD:
+    needs: CI
+    permissions:
+      contents: read    # Necesario para leer el código
+      id-token: write   # El que te está pidiendo el error
+    uses: ./.github/workflows/cd.yaml
+

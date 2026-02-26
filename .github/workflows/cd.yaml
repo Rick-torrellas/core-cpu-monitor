@@ -1,10 +1,7 @@
 name: CD Pipeline
 
 on:
-  push:
-    branches: [main]
-    tags:
-      - 'v*' # Detecta versiones como v1.0.0
+  workflow_call:
 
 jobs:
   # Llamada al módulo de publicación (solo si hay un tag)
