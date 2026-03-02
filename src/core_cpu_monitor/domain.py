@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import List, Optional
 
 import psutil
-from core_log_engine import Logger
 
 # --- Data Schemas ---
 
@@ -32,13 +31,7 @@ class CPUStatus:
 
 class CPUStateCheck:
     """Use case class responsible for capturing CPU state information."""
-
-    def __init__(self, logger: Logger) -> None:
-        # Initialize with a configured logger instance through dependency injection
-        # The implementation follows the port-adapter pattern, accepting
-        # any Logger port implementation
-        self.logger: Logger = logger
-
+ 
     def capture(self) -> CPUStatus:
         """Captures the current CPU state and returns a CPUStatus object.
 
@@ -49,7 +42,6 @@ class CPUStateCheck:
             Handles platform-specific variations and potential failures gracefully
             by providing fallback values and logging warnings when necessary.
         """
-        self.logger.debug("Capturing CPU state...")
 
         # Frequency metrics - may not be available on all platforms
         freq = psutil.cpu_freq()
@@ -85,9 +77,8 @@ class CPUStateCheck:
                     first_sensor = first_sensor_list[0]
                     if hasattr(first_sensor, "current"):
                         temp = float(first_sensor.current)
-        except Exception as e:
-            # Log warning but don't fail the capture operation
-            self.logger.warning(f"Could not retrieve temperature sensors: {e}")
+        except Exception:
+            temp = None  # Si falla la lectura de temperatura, dejamos el valor como None
 
         # CPU core counts
         physical_cores: Optional[int] = psutil.cpu_count(logical=False)
