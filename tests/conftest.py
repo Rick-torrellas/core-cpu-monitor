@@ -6,8 +6,6 @@ import pytest
 TARGET_MODULE = "core_cpu_monitor.domain"
 
 
-
-
 @pytest.fixture
 def mock_psutil():
     with patch(f"{TARGET_MODULE}.psutil") as mocked:
@@ -27,12 +25,14 @@ def mock_psutil():
         mocked.getloadavg.return_value = (1.0, 0.5, 0.2)
         yield mocked
 
+
 @pytest.fixture
 def mock_platform():
     with patch(f"{TARGET_MODULE}.platform") as mocked:
         mocked.processor.return_value = "Intel"
         mocked.machine.return_value = "x86_64"
         yield mocked
+
 
 @pytest.fixture
 def mock_datetime():

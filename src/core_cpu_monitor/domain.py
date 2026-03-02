@@ -31,7 +31,7 @@ class CPUStatus:
 
 class CPUStateCheck:
     """Use case class responsible for capturing CPU state information."""
- 
+
     def capture(self) -> CPUStatus:
         """Captures the current CPU state and returns a CPUStatus object.
 
