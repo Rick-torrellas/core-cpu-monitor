@@ -2,12 +2,31 @@ name: CD Pipeline
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   # Llamada al módulo de publicación (solo si hay un tag)
-  publish:
-   if: startsWith(github.ref, 'refs/tags/v') && endsWith(github.ref, '.0')
-   permissions:
-      contents: read    # Necesario para leer el código
-      id-token: write   # El que te está pidiendo el error
-   uses: ./.github/workflows/pip-publish.yaml
+  publish-pip-package:
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: read    # Necesario para checkout
+      id-token: write   # Requerido para autenticación OIDC (PyPI/Trusted Publishers)
+    uses: ./.github/workflows/pip-publish.yaml
+  
+  publish-github-packages:
+    if: startsWith(github.ref, 'refs/tags/')
+    uses: ./.github/workflows/githubPackage.yaml
+    secrets: inherit
+    permissions:
+      contents: read
+      packages: write # Vital para poder subir el paquete
+
+  deploy-gitub-pages:
+    # Si Pages depende de que el paquete se publique primero, 
+    # podrías añadir: needs: publish-pip-package
+    permissions:
+      contents: read
+      pages: write      # Requerido para el despliegue de Pages
+      id-token: write   # Requerido para la autenticación del despliegue
+    uses: ./.github/workflows/github-page.yaml
+    secrets: inherit

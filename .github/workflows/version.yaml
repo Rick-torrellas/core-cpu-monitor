@@ -1,7 +1,8 @@
 name: Update Version Badge
 
 on:
-  workflow_call: # Permite que ci.yml lo llame
+  workflow_call: 
+  workflow_dispatch:
 
 jobs:
   update-badge:

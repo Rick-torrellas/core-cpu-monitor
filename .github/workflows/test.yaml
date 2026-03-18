@@ -3,6 +3,7 @@ name: Tests  # Workflow name displayed in GitHub Actions UI
 # Workflow triggers - defines when this automated pipeline should execute
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   pytest:  # Job identifier - runs pytest test suite

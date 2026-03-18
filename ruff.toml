@@ -1,0 +1,10 @@
+# Longitud máxima de línea
+line-length = 130
+
+[lint]
+# Selecciona las reglas a aplicar (pycodestyle, Pyflakes, isort)
+select = ["E", "F", "I"]
+ignore = []
+
+[format]
+quote-style = "double"

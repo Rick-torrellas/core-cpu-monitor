@@ -2,6 +2,8 @@ name: Pip Publish Module
 
 on:
   workflow_call: # Esto permite que sea llamado por otro archivo
+  workflow_dispatch:
+  
 
 jobs:
   publish:
