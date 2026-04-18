@@ -9,12 +9,15 @@ default:
 # para construir el paquete
 build:
     uv build
+
 # para publicar el paquete en PyPI
 publish:
     uv publish
+
 # Run the test suite with verbose output using pytest
 test:
-	uv run pytest -v  
+	uv run --active pytest -v  --showlocals
+
 # Run all code quality checks (formatting and linting)
 check: format-check lint-check
 # Check code formatting compliance without making changes

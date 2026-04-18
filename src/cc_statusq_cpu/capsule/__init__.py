@@ -1,7 +1,9 @@
 from .ConsoleObserver import ConsoleObserver
-from .CpuObserver import CpuObserver
+from .FileObserver import FileObserver
+from .PsutilCPUProvider import PsutilCPUProvider
 
 __all__ = [
     "ConsoleObserver",
-    "CpuObserver",
+    "FileObserver",
+    "PsutilCPUProvider",
 ]

@@ -2,7 +2,7 @@ from ..core.CPUObserver import CPUObserver
 from ..core.CPUStatus import CPUStatus
 
 
-class ConsoleVisualizer(CPUObserver):
+class ConsoleObserver(CPUObserver):
     """Observer that prints to the console in an elegant format."""
     
     def on_capture_start(self, mode: str):
