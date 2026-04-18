@@ -1,42 +1,54 @@
 from datetime import datetime
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
-TARGET_MODULE = "core_cpu_monitor.domain"
+from cc_statusq_cpu.core import CPUObserver, CPUProvider, CPUStatus
 
 
 @pytest.fixture
-def mock_psutil():
-    with patch(f"{TARGET_MODULE}.psutil") as mocked:
-        # Usamos PropertyMock o objetos simples para mayor claridad
-        mocked.cpu_times.return_value = MagicMock(user=10.0, system=5.0, idle=100.0)
-        mocked.cpu_freq.return_value = MagicMock(current=2500.0, min=800.0, max=3500.0)
-
-        # Mejoramos la lógica de cpu_count
-        mocked.cpu_count.side_effect = lambda logical: 4 if not logical else 8
-
-        # Evitamos fragilidad en cpu_percent usando una función inteligente
-        def cpu_percent_mock(interval=None, percpu=False):
-            return [10.0, 30.0] if percpu else 20.5
-
-        mocked.cpu_percent.side_effect = cpu_percent_mock
-
-        mocked.getloadavg.return_value = (1.0, 0.5, 0.2)
-        yield mocked
-
-
-@pytest.fixture
-def mock_platform():
-    with patch(f"{TARGET_MODULE}.platform") as mocked:
-        mocked.processor.return_value = "Intel"
-        mocked.machine.return_value = "x86_64"
-        yield mocked
-
+def sample_cpu_status():
+    """Proporciona un objeto CPUStatus con datos estáticos para validaciones."""
+    return CPUStatus(
+        name="Mock Processor @ 3.50GHz",
+        architecture="x86_64",
+        physical_cores=4,
+        logical_cores=8,
+        current_frequency=3500.0,
+        min_frequency=800.0,
+        max_frequency=4000.0,
+        total_usage_percentage=25.5,
+        usage_per_core=[20.0, 30.0, 25.0, 27.0, 22.0, 28.0, 26.0, 26.0],
+        average_load=[1.5, 1.2, 1.1],
+        user_time=1234.5,
+        system_time=567.8,
+        idle_time=9000.0,
+        current_temperature=45.0,
+        timestamp=datetime(2026, 4, 18, 12, 0, 0)
+    )
 
 @pytest.fixture
-def mock_datetime():
-    fixed_now = datetime(2024, 1, 1)
-    with patch(f"{TARGET_MODULE}.datetime") as mock_date:
-        mock_date.now.return_value = fixed_now
-        yield mock_date
+def mock_provider(sample_cpu_status):
+    """
+    Crea un mock que cumple con el protocolo CPUProvider.
+    Configurado para devolver sample_cpu_status por defecto.
+    """
+    provider = MagicMock(spec=CPUProvider)
+    provider.capture_once.return_value = sample_cpu_status
+    return provider
+
+@pytest.fixture
+def mock_observer():
+    """
+    Crea un mock de un CPUObserver para verificar que 
+    los métodos de notificación se llamen correctamente.
+    """
+    return MagicMock(spec=CPUObserver)
+
+@pytest.fixture
+def statusq_instance(mock_provider):
+    """
+    Instancia de StatusqCPU lista para usar con un provider mockeado.
+    """
+    from core.StatusqCPU import StatusqCPU
+    return StatusqCPU(provider=mock_provider)
