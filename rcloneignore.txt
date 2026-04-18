@@ -1,0 +1,41 @@
+# --- Python ---
+**/*.pyc
+**/__pycache__/**
+**/.venv/**
+**/.ruff_cache/**
+**/env/**
+**/.pytest_cache/**
+**/.ipynb_checkpoints/**
+**/*.pyo
+**/*.pyd
+.env/
+.venv/
+.ruff_cache/
+.pytest_cache/
+
+# --- Node.js ---
+**/node_modules/**
+**/bower_components/**
+**/.npm/**
+**/.yarn/**
+**/.next/**
+**/dist/**
+**/build/**
+
+# --- Entornos y Secretos ---
+**/.env*
+**/.venv/**
+**/venv/**
+**/.direnv/**
+
+# --- IDEs y Temporales ---
+**/.vscode/**
+**/.idea/**
+**/*.swp
+**/.DS_Store
+**/Thumbs.db
+**/*.log
+**/tmp/**
+**/temp/**
+
+key/
