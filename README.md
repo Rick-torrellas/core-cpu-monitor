@@ -3,12 +3,12 @@
 > Efficient monitoring and management of CPU status.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-![Version](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Rick-torrellas/CapsuleCore-book/badges/version.json)
-[![CI CD](https://github.com/Rick-torrellas/CapsuleCore-book/actions/workflows/main.yaml/badge.svg)](https://github.com/Rick-torrellas/CapsuleCore-book/actions/workflows/main.yaml)
+![Version](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Rick-torrellas/cc.StatusQ-cpu/badges/version.json)
+[![CI CD](https://github.com/Rick-torrellas/cc.StatusQ-cpu/actions/workflows/main.yaml/badge.svg)](https://github.com/Rick-torrellas/cc.StatusQ-cpu/actions/workflows/main.yaml)
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Download](https://img.shields.io/github/v/release/Rick-torrellas/CapsuleCore-book?label=Download&color=orange)](https://github.com/Rick-torrellas/CapsuleCore-book/releases)
+[![Download](https://img.shields.io/github/v/release/Rick-torrellas/cc.StatusQ-cpu?label=Download&color=orange)](https://github.com/Rick-torrellas/cc.StatusQ-cpu/releases)
 [![docs](https://img.shields.io/badge/docs-read_now-blue?style=flat-square)](https://rick-torrellas.github.io/cc-book-kit/)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Documentation-blue?logo=gitbook&logoColor=white)](https://deepwiki.com/Rick-torrellas/CapsuleCore-book)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Documentation-blue?logo=gitbook&logoColor=white)](https://deepwiki.com/Rick-torrellas/cc.StatusQ-cpu)
 
 💊⚛️
 
