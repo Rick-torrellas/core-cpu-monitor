@@ -1,67 +1,56 @@
 import time
-from typing import List, Optional
+from typing import Optional
 
-from .CPUObserver import CPUObserver
+from .CPUEventBus import CPUEventBus
+from .CPUEvents import DataReceivedEvent, MonitoringErrorEvent, MonitoringFinishedEvent, MonitoringStartedEvent
 from .CPUProvider import CPUProvider
 from .CPUStatus import CPUStatus
 
 
 class StatusqCPU:
-    def __init__(self, provider: CPUProvider):
+    def __init__(self, provider: CPUProvider, event_bus: CPUEventBus):
         """
-        Initializes the status monitor with a specific CPU data provider.
+        StatusqCPU now depends on a provider and an event bus.
+        It no longer manages observers directly.
         """
         self._provider = provider
-        self._observers: List[CPUObserver] = []
-
-    def attach(self, observer: CPUObserver):
-        """
-        Registers a new observer interested in CPU status events.
-        """
-        self._observers.append(observer)
-
-    def _notify(self, event_name: str, *args, **kwargs):
-        """
-        Internal method to propagate events to all registered observers using reflection.
-        """
-        for observer in self._observers:
-            method = getattr(observer, event_name, None)
-            if method:
-                method(*args, **kwargs)
+        self._event_bus = event_bus
 
     def run_single_check(self) -> Optional[CPUStatus]:
-        """
-        Executes a single data capture cycle.
-        """
-        self._notify("on_capture_start", mode="single")
+        """Executes a single capture and publishes the events to the bus."""
+        self._event_bus.publish(MonitoringStartedEvent(mode="single"))
         try:
             data = self._provider.capture_once()
-            self._notify("on_data_received", status=data)
+            self._event_bus.publish(DataReceivedEvent(status=data))
             return data
         except Exception as e:
-            self._notify("on_error", message="Error during single capture", error=e)
+            self._event_bus.publish(MonitoringErrorEvent(
+                message="Error during single capture", 
+                exception=e
+            ))
         finally:
-            self._notify("on_finished")
+            self._event_bus.publish(MonitoringFinishedEvent())
 
     def run_continuous_monitoring(self, interval: float, iterations: int = None):
         """
-        Executes capture cycles in a loop at a specific interval.
-        
-        Note: A loop is used to trigger events for each individual reading,
-        providing granular updates instead of waiting for a batch process.
+        Monitors CPU in a loop. Every step is an event published to the bus.
         """
-        self._notify("on_capture_start", mode="continuous")
+        self._event_bus.publish(MonitoringStartedEvent(mode="continuous"))
         count = 0
         try:
             while iterations is None or count < iterations:
-                # Use capture_once inside the loop for granular event notification
                 data = self._provider.capture_once() 
-                self._notify("on_data_received", status=data)
+                self._event_bus.publish(DataReceivedEvent(status=data))
                 count += 1
                 time.sleep(interval)
         except KeyboardInterrupt:
-            self._notify("on_error", message="Monitoring interrupted by user")
+            self._event_bus.publish(MonitoringErrorEvent(
+                message="Monitoring interrupted by user"
+            ))
         except Exception as e:
-            self._notify("on_error", message="Continuous monitoring failure", error=e)
+            self._event_bus.publish(MonitoringErrorEvent(
+                message="Continuous monitoring failure", 
+                exception=e
+            ))
         finally:
-            self._notify("on_finished")
+            self._event_bus.publish(MonitoringFinishedEvent())
