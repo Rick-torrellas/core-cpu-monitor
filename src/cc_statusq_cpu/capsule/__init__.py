@@ -1,9 +1,7 @@
-from .ConsoleObserver import ConsoleObserver
-from .CSVObserver import CSVObserver
+from .ConsoleSubscriber import ConsoleSubscriber
 from .PsutilCPUProvider import PsutilCPUProvider
 
 __all__ = [
-    "ConsoleObserver",
-    "CSVObserver",
     "PsutilCPUProvider",
+    "ConsoleSubscriber"
 ]
