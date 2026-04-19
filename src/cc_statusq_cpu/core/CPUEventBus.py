@@ -21,8 +21,12 @@ class CPUEventBus:
         self._subscribers[event_type].append(callback)
 
     def publish(self, event: CPUEvent):
-        """Broadcasts an event to all interested subscribers."""
-        event_type = type(event)
-        if event_type in self._subscribers:
-            for callback in self._subscribers[event_type]:
-                callback(event)
+        """
+        Broadcasts an event to all interested subscribers.
+        Supports inheritance: subscribers to a parent class will receive child events.
+        """
+        for event_type, callbacks in self._subscribers.items():
+            if isinstance(event, event_type):
+                for callback in callbacks:
+                    callback(event)
+    
